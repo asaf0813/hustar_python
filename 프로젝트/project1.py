@@ -139,28 +139,35 @@ def how():
     for i in command:
         print(i)
 
-file_name = 'students.txt'
+def openfile():
+    file_name = 'students.txt'
 
-if len(sys.argv) > 1:
-    file_name = sys.argv[1]
-print(file_name)
-f = open(file_name, 'r')
-lines = f.readlines()
-f.close()
+    if len(sys.argv) > 1:
+        file_name = sys.argv[1]
+    print(file_name)
+    f = open(file_name, 'r')
+    lines = f.readlines()
+    f.close()
+    return lines
 
-for index, line in enumerate(lines):
-    lines[index] = line.strip().split('\t')
+def start(lines):
+    for index, line in enumerate(lines):
+        lines[index] = line.strip().split('\t')
 
-students = list()
-for i in lines:
-    temp = dict()
-    temp['ID'], temp['Name'], temp['Midterm'], temp['Final'] = i
-    temp['Average'], temp['Grade'] = '', ''
-    students.append(temp)
-for index, student in enumerate(students):
-    student['Average'] = (int(student['Midterm']) + int(student['Final'])) / 2
-    get_grade(students[index])
+    students = list()
+    for i in lines:
+        temp = dict()
+        temp['ID'], temp['Name'], temp['Midterm'], temp['Final'] = i
+        temp['Average'], temp['Grade'] = '', ''
+        students.append(temp)
+    for index, student in enumerate(students):
+        student['Average'] = (int(student['Midterm']) + int(student['Final'])) / 2
+        get_grade(students[index])
 
+    return students
+
+open = openfile()
+students = start(open)
 while True:
     user_input = input('#')
     if user_input == 'search':
