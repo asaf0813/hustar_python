@@ -125,19 +125,41 @@ def quit(students):
         elif stud_quit == 'yes':
             break
     stud_file = input('File name :')
-    students.sort(key=lambda x: x['Average'], reverse=True)
-    data = [list(x.values())[:-2] for x in students]
+    students.sort(key=lambda x:x['Average'], reverse=True)
+    data = list()
+    for x in students:
+        data.append(list(x.values())[:-2])
     f = open(stud_file, 'w')
     for i in data:
-        a = '\t'.join(i)
+        a='\t'.join(i)
         a += '\n'
         f.write(a)
     f.close
 
 def how():
-    command = ['search','show','changescore','searchgrade','add','remove','quit']
+    command = ['search', 'show', 'changescore', 'changename', 'searchgrade', 'add', 'remove', 'quit']
     for i in command:
         print(i)
+
+def changename(students):
+    stud_changename = input('Students ID: ')
+    for index, i in enumerate(students):
+        if i['ID'] not in stud_changename:
+            pass
+        else:
+            tmp_student = dict()
+            for key in i:
+                tmp_student[key] = i[key]
+            stud_name = str(input("How would you change the student's name?"))
+            students[index]['Name'] = stud_name
+            print('Name changed.')
+            show([tmp_student])
+            data = '%s\t%15s\t\t%4s\t\t%3s\t\t%6.1f\t\t%4s\n' % (
+                students[index]['ID'], students[index]['Name'], students[index]['Midterm'],
+                students[index]['Final'], students[index]['Average'], students[index]['Grade'])
+            print(data)
+            return
+    print('NO SUCH PERSON')
 
 def openfile():
     file_name = 'students.txt'
@@ -166,8 +188,10 @@ def start(lines):
 
     return students
 
-open = openfile()
-students = start(open)
+opens = openfile()
+students = start(opens)
+show(students)
+
 while True:
     user_input = input('#')
     if user_input == 'search':
@@ -178,6 +202,8 @@ while True:
         changescore(students)
     elif user_input == 'searchgrade':
         searchgrade(students)
+    elif user_input == 'changename':
+        changename(students)
     elif user_input == 'add':
         add(students)
     elif user_input == 'remove':
