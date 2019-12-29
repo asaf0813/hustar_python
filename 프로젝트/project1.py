@@ -15,12 +15,12 @@ def get_grade(para):
 def show(students):
     sorted_students = sorted(students, key=lambda x: x['Average'], reverse=True)
     student_list = list()
-    print("Student\t\t\tName\t\tMidterm\t\tFinal\t\tAverage\t\tGrade")
-    print('---------------------------------------------------------------------------------------------')
+    print("Student\t\t\tName\t\tMidterm\tFinal\tAverage\tGrade")
+    print('---------------------------------------------------------------------')
     for student in sorted_students:
         temp = list(student.values())
         student_list.append(temp)
-        data = '%s\t%15s\t\t%4s\t\t%3s\t\t%6.1f\t\t%4s\n' % (temp[0], temp[1], temp[2], temp[3], temp[4], temp[5])
+        data = '%s\t%15s\t\t%5s\t%4s\t%6.1f\t%3s\n' % (temp[0], temp[1], temp[2], temp[3], temp[4], temp[5])
         print(data)
 
 def search(students):
@@ -55,10 +55,10 @@ def changescore(students):
                     else:
                         students[index]['Final'] = int(stud_new)
                     show([tmp_student])
-                    print('Score changed.')
+                    print('Score changed.\n')
                     students[index]['Average'] = (int(students[index]['Final']) + int(students[index]['Midterm'])) / 2
                     get_grade(students[index])
-                    data = '%s\t%15s\t\t%4s\t\t%3s\t\t%6.1f\t\t%4s\n' % (
+                    data = '%s\t%15s\t\t%5s\t%4s\t%6.1f\t%3s\n' % (
                     students[index]['ID'], students[index]['Name'], students[index]['Midterm'],
                     students[index]['Final'], students[index]['Average'], students[index]['Grade'])
                     print(data)
@@ -121,6 +121,7 @@ def quit(students):
     while True:
         stud_quit = input('Save data?[yes/no]')
         if stud_quit == 'no':
+            print("")
             return
         elif stud_quit == 'yes':
             break
@@ -135,7 +136,7 @@ def quit(students):
         a += '\n'
         f.write(a)
     f.close
-
+    exit()
 def how():
     command = ['search', 'show', 'changescore', 'changename', 'searchgrade', 'add', 'remove', 'quit']
     for i in command:
@@ -152,9 +153,9 @@ def changename(students):
                 tmp_student[key] = i[key]
             stud_name = str(input("How would you change the student's name?"))
             students[index]['Name'] = stud_name
-            print('Name changed.')
+            print('Name changed.\n')
             show([tmp_student])
-            data = '%s\t%15s\t\t%4s\t\t%3s\t\t%6.1f\t\t%4s\n' % (
+            data = '%s\t%15s\t\t%5s\t%4s\t%6.1f\t%3s\n' % (
                 students[index]['ID'], students[index]['Name'], students[index]['Midterm'],
                 students[index]['Final'], students[index]['Average'], students[index]['Grade'])
             print(data)
@@ -188,30 +189,32 @@ def start(lines):
 
     return students
 
+def loop(students):
+    show(students)
+    while True:
+        user_input = input('#').lower()
+        if user_input == 'search':
+            search(students)
+        elif user_input == 'show':
+            show(students)
+        elif user_input == 'changescore':
+            changescore(students)
+        elif user_input == 'searchgrade':
+            searchgrade(students)
+        elif user_input == 'changename':
+            changename(students)
+        elif user_input == 'add':
+            add(students)
+        elif user_input == 'remove':
+            remove(students)
+        elif user_input == 'quit':
+            quit(students)
+        elif user_input == '?':
+            how()
+        else:
+            pass
+
 opens = openfile()
 students = start(opens)
-show(students)
+loop(students)
 
-while True:
-    user_input = input('#')
-    if user_input == 'search':
-        search(students)
-    elif user_input == 'show':
-        show(students)
-    elif user_input == 'changescore':
-        changescore(students)
-    elif user_input == 'searchgrade':
-        searchgrade(students)
-    elif user_input == 'changename':
-        changename(students)
-    elif user_input == 'add':
-        add(students)
-    elif user_input == 'remove':
-        remove(students)
-    elif user_input == 'quit':
-        quit(students)
-        break
-    elif user_input == '?':
-        how()
-    else:
-        pass
