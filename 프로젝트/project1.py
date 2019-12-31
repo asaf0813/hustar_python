@@ -112,10 +112,10 @@ def searchgrade(students):
 
 def remove(students):
     found_or_not = 0
-    stud_remove = input('Students ID: ')
     if len(students) == 0:
         print('List is empty.')
         return
+    stud_remove = input('Students ID: ')
     for index, i in enumerate(students):
         if i['ID'] not in stud_remove:
             pass
