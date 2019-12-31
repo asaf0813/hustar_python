@@ -49,13 +49,13 @@ def changescore(students):
             stud_score = str(input('Mid or Final?'))
             if stud_score == 'mid' or stud_score == 'final':
                 stud_new = input('Input new score :')
-                if 0 < int(stud_new) <= 100:
+                if 0 <= int(stud_new) <= 100:
                     if stud_score == 'mid':
                         students[index]['Midterm'] = int(stud_new)
                     else:
                         students[index]['Final'] = int(stud_new)
                     show([tmp_student])
-                    print('Score changed.\n')
+                    print('\n<Score Changed>\n')
                     students[index]['Average'] = (int(students[index]['Final']) + int(students[index]['Midterm'])) / 2
                     get_grade(students[index])
                     data = '%s\t%15s\t\t%5s\t%4s\t%6.1f\t%3s\n' % (
@@ -83,14 +83,24 @@ def add(students):
     stu_temp['Average'] = (int(stu_temp['Final']) + int(stu_temp['Midterm'])) / 2
     get_grade(stu_temp)
     students.append(stu_temp)
-    print('Student added')
+    print('\n<Student Added>\n')
+    print("Student\t\t\tName\t\tMidterm\tFinal\tAverage\tGrade")
+    print('---------------------------------------------------------------------')
+    data = '%s\t%15s\t\t%5s\t%4s\t%6.1f\t%3s\n' % (
+        stu_temp['ID'], stu_temp['Name'], stu_temp['Midterm'],
+        stu_temp['Final'], stu_temp['Average'], stu_temp['Grade'])
+    print(data)
 
 def searchgrade(students):
     stud_sg = input('searchgrade: ')
     found_or_not = 0
+    Grades = ('A','B','C','D','F')
     return_stud = list()
     for i in students:
+        if stud_sg not in Grades:
+            return
         if i['Grade'] in stud_sg:
+            print('Grade to search: %s'%i['Grade'])
             if not isinstance(found_or_not, list):
                 found_or_not = list()
             found_or_not.append(i)
@@ -103,19 +113,18 @@ def searchgrade(students):
 def remove(students):
     found_or_not = 0
     stud_remove = input('Students ID: ')
+    if len(students) == 0:
+        print('List is empty.')
+        return
     for index, i in enumerate(students):
-        if len(students) == 0:
-            print('List is empty')
-            return
-
         if i['ID'] not in stud_remove:
             pass
         elif i['ID'] in stud_remove:
             del students[index]
-            print('student removed')
-            found_or_not = True
+            print('%s Student removed' %i['ID'])
+            found_or_not = i
     if not found_or_not:
-        print('NO SUCH PERSON')
+        print('NO SUCH PERSON.')
 
 def quit(students):
     while True:
@@ -137,10 +146,13 @@ def quit(students):
         f.write(a)
     f.close
     exit()
+
 def how():
+    print('==================')
+    print('    <Command>\n')
     command = ['search', 'show', 'changescore', 'changename', 'searchgrade', 'add', 'remove', 'quit']
-    for i in command:
-        print(i)
+    for i,j in enumerate(command):
+        print('%d. %s'%(i+1,j))
 
 def changename(students):
     stud_changename = input('Students ID: ')
@@ -153,7 +165,7 @@ def changename(students):
                 tmp_student[key] = i[key]
             stud_name = str(input("How would you change the student's name?"))
             students[index]['Name'] = stud_name
-            print('Name changed.\n')
+            print('\n<Name Changed>\n')
             show([tmp_student])
             data = '%s\t%15s\t\t%5s\t%4s\t%6.1f\t%3s\n' % (
                 students[index]['ID'], students[index]['Name'], students[index]['Midterm'],
@@ -186,7 +198,6 @@ def start(lines):
     for index, student in enumerate(students):
         student['Average'] = (int(student['Midterm']) + int(student['Final'])) / 2
         get_grade(students[index])
-
     return students
 
 def loop(students):
@@ -212,9 +223,11 @@ def loop(students):
         elif user_input == '?':
             how()
         else:
+            print('명령어가 잘못 되었습니다')
+            how()
             pass
 
-opens = openfile()
-students = start(opens)
-loop(students)
-
+if __name__ == '__main__':
+    opens = openfile()
+    students = start(opens)
+    loop(students)

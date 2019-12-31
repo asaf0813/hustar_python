@@ -1,0 +1,5 @@
+20190001	Lee Jaeyoon	55	55
+20190002	Kim Minsu 	40	80
+20190003	Jang Yunjeong 	100	100
+20190004	Lee Saeyun	0	0
+20190005	Ha Dongjun	22	22
