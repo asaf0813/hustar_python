@@ -78,8 +78,14 @@ def add(students):
     stu_temp = dict()
     stu_temp['ID'] = stu_add
     stu_temp['Name'] = input('Name :')
-    stu_temp['Midterm'] = input('Miderm Score :')
-    stu_temp['Final'] = input('Final Score :')
+    mid_score = int(input('Miderm Score :'))
+    final_score = int(input('Final Score :'))
+    if 0 <= mid_score and final_score <= 100 :
+        stu_temp['Midterm'] = mid_score
+        stu_temp['Final'] = final_score
+    else:
+        print("점수는 0 ~ 100 외의 값은 입력될 수 없습니다.")
+        return
     stu_temp['Average'] = (int(stu_temp['Final']) + int(stu_temp['Midterm'])) / 2
     get_grade(stu_temp)
     students.append(stu_temp)
@@ -180,10 +186,10 @@ def openfile():
     if len(sys.argv) > 1:
         file_name = sys.argv[1]
     print(file_name)
-    f = open(file_name, 'r')
-    lines = f.readlines()
-    f.close()
-    return lines
+    with open(file_name, 'r') as f:
+    # f = open(file_name, 'r')
+        lines = f.readlines()
+        return lines
 
 def start(lines):
     for index, line in enumerate(lines):
@@ -231,3 +237,4 @@ if __name__ == '__main__':
     opens = openfile()
     students = start(opens)
     loop(students)
+
