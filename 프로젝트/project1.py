@@ -78,9 +78,9 @@ def add(students):
     stu_temp = dict()
     stu_temp['ID'] = stu_add
     stu_temp['Name'] = input('Name :')
-    mid_score = int(input('Miderm Score :'))
-    final_score = int(input('Final Score :'))
-    if 0 <= mid_score and final_score <= 100 :
+    mid_score = input('Miderm Score :')
+    final_score = input('Final Score :')
+    if 0 <= int(mid_score) and int(final_score) <= 100:
         stu_temp['Midterm'] = mid_score
         stu_temp['Final'] = final_score
     else:
@@ -147,7 +147,7 @@ def quit(students):
         data.append(list(x.values())[:-2])
     f = open(stud_file, 'w')
     for i in data:
-        a='\t'.join(i)
+        a = '\t'.join(i)
         a += '\n'
         f.write(a)
     f.close
@@ -186,10 +186,10 @@ def openfile():
     if len(sys.argv) > 1:
         file_name = sys.argv[1]
     print(file_name)
-    with open(file_name, 'r') as f:
-    # f = open(file_name, 'r')
-        lines = f.readlines()
-        return lines
+    # with open(file_name, 'r') as f:
+    f = open(file_name, 'r')
+    lines = f.readlines()
+    return lines
 
 def start(lines):
     for index, line in enumerate(lines):
